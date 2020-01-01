@@ -29,21 +29,18 @@
 							<v-card-title
 							class="grey lighten-2"
 							>
-								<h1 @click="window = 0" class="logo font-weight-bold headline red--text text--darken-4" title="SCHEME">
+								<h1 @click="window = windows.main" class="logo font-weight-bold headline red--text text--darken-4" title="SCHEME">
 									SCHEME
 								</h1>
-
-								<v-btn icon small @click="window--"><v-icon>mdi-arrow-left-bold</v-icon></v-btn>
-								<v-spacer></v-spacer>
-								<v-btn icon small @click="window++"><v-icon>mdi-arrow-right-bold</v-icon></v-btn>
 
 							</v-card-title>
 							<v-window
 								v-model="window"
 								vertical
 								reverse
+								show-arrows
 							>
-								<v-window-item key="0">
+								<v-window-item key="0" :value="windows.main">
 									<v-tabs
 										v-model="tab"
 										background-color="grey lighten-4"
@@ -77,21 +74,21 @@
 														lazy-validation
 												>
 														<v-text-field
-														v-model="email"
-														:rules="emailRules"
-														label="Ваш адрес эл. почты"
-														prepend-icon="mdi-email"
-														type="email"
-														required
+															v-model="email"
+															:rules="emailRules"
+															label="Ваш адрес эл. почты"
+															prepend-icon="mdi-email"
+															type="email"
+															required
 														></v-text-field>
 
 														<v-text-field
-														v-model="loginPassword"
-														:rules="passRules"
-														label="Пароль"
-														prepend-icon="mdi-lock"
-														type="password"
-														required
+															v-model="loginPassword"
+															:rules="passRules"
+															label="Пароль"
+															prepend-icon="mdi-lock"
+															type="password"
+															required
 														></v-text-field>
 
 														<v-row align="baseline" justify="space-between" no-gutters>
@@ -101,7 +98,7 @@
 																text
 																small
 																color="primary"
-																@click="window = 3"
+																@click="window = windows.forgotPassword"
 															>
 																<span class="text-capitalize mr-1">Забыли</span>
 																<span class="text-lowercase">пароль?</span>
@@ -282,8 +279,8 @@
 									</v-btn>
 								</v-window-item>
 
-								<v-window-item key="1" class="text-center">
-									<v-icon size="140" class="my-5" color="info">mdi-shield-account</v-icon>
+								<v-window-item key="1" class="text-center" :value="windows.accountConfirmation">
+									<v-icon size="140" class="my-5" color="warning">mdi-account-alert</v-icon>
 									<v-card-subtitle>
 										Подтвердите Ваш аккаунт
 									</v-card-subtitle>
@@ -295,7 +292,7 @@
 									</v-card-text>
 									<v-divider></v-divider>
 									<v-card-actions>
-										<v-btn text small @click="window = 0"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
+										<v-btn text small @click="window = windows.main"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
 										<v-spacer></v-spacer>
 										<v-btn 
 											text 
@@ -309,8 +306,8 @@
 									</v-card-actions>
 								</v-window-item>
 
-								<v-window-item key="2" class="text-center">
-									<v-icon size="140" class="my-5" color="error">mdi-shield-account</v-icon>
+								<v-window-item key="2" class="text-center" :value="windows.accountNotConfirmed">
+									<v-icon size="140" class="my-5" color="error">mdi-account-off</v-icon>
 									<v-card-subtitle>
 										Аккаунт не подтвержден
 									</v-card-subtitle>
@@ -334,7 +331,7 @@
 									</v-card-text>
 									<v-divider></v-divider>
 									<v-card-actions>
-										<v-btn text small @click="window = 0"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
+										<v-btn text small @click="window = windows.main"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
 										<v-spacer></v-spacer>
 										<v-btn 
 											text 
@@ -348,14 +345,14 @@
 									</v-card-actions>
 								</v-window-item>
 
-								<v-window-item key="3" class="text-center">
-									<v-icon size="140" class="my-5" color="warning">mdi-shield-lock</v-icon>
+								<v-window-item key="3" class="text-center" :value="windows.forgotPassword">
+									<v-icon size="140" class="my-5" color="info">mdi-lock-question</v-icon>
 									<v-card-subtitle>
-										Восстановление пароля
+										Забыли пароль?
 									</v-card-subtitle>
 									<v-divider></v-divider>
 									<v-card-text>
-										<p>Введите адрес эл. почты на которое будет отправлено письмо с инструкцией по восстановлению Вашего пароля.</p>
+										<p>Введите адрес эл. почты на которое будет отправлено письмо с инструкцией для восстановления Вашего пароля.</p>
 										<v-form
 											ref="resetEmailForm"
 											v-model="validEmailReset"
@@ -373,7 +370,7 @@
 									</v-card-text>
 									<v-divider></v-divider>
 									<v-card-actions>
-										<v-btn text small @click="window = 0"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
+										<v-btn text small @click="window = windows.main"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
 										<v-spacer></v-spacer>
 										<v-btn 
 											text 
@@ -387,20 +384,20 @@
 									</v-card-actions>
 								</v-window-item>
 
-								<v-window-item key="4" class="text-center">
+								<v-window-item key="4" class="text-center" :value="windows.passwordReset">
 									<v-icon size="140" class="my-5" color="info">mdi-shield-lock</v-icon>
 									<v-card-subtitle>
 										Восстановление пароля
 									</v-card-subtitle>
 									<v-divider></v-divider>
 									<v-card-text>
-										<p>На почту <a :href="`mailto:${ email }`">{{ email }}</a> было отправлено письмо с инструкцией по восстановлению пароля.
+										<p>На почту <a :href="`mailto:${ email }`">{{ email }}</a> было отправлено письмо с инструкцией для восстановления пароля.
 										Следуйте инструкции для успешного завершения операции.</p>
 										<p class="mb-0">Если письмо не пришло, отправьте письмо повторно, нажав на кнопку ниже.</p>
 									</v-card-text>
 									<v-divider></v-divider>
 									<v-card-actions>
-										<v-btn text small @click="window = 0"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
+										<v-btn text small @click="window = windows.main"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
 										<v-spacer></v-spacer>
 										<v-btn 
 											text 
@@ -414,8 +411,8 @@
 									</v-card-actions>
 								</v-window-item>
 
-								<v-window-item key="5" class="text-center">
-									<v-icon size="140" class="my-5" color="info">mdi-shield-lock</v-icon>
+								<v-window-item key="5" class="text-center" :value="windows.passwordCreate">
+									<v-icon size="140" class="my-5" color="info">mdi-textbox-password</v-icon>
 									<v-card-subtitle>
 										Создание нового пароля
 									</v-card-subtitle>
@@ -448,7 +445,7 @@
 									</v-card-text>
 									<v-divider></v-divider>
 									<v-card-actions>
-										<v-btn text small @click="window = 0"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
+										<v-btn text small @click="window = windows.main"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
 										<v-spacer></v-spacer>
 										<v-btn 
 											text 
@@ -456,14 +453,14 @@
 											:loading="loading"
 											@click="validateChangePassword"
 										>
-											Изменить пароль
+											Сохранить
 											<v-icon right>mdi-lock-reset</v-icon>
 										</v-btn>
 									</v-card-actions>
 								</v-window-item>
 
-								<v-window-item key="6" class="text-center">
-									<v-icon size="140" class="my-5" color="success">mdi-shield-lock</v-icon>
+								<v-window-item key="6" class="text-center" :value="windows.passwordSuccess">
+									<v-icon size="140" class="my-5" color="success">mdi-shield-check</v-icon>
 									<v-card-subtitle>
 										Пароль был успешно изменен
 									</v-card-subtitle>
@@ -473,7 +470,7 @@
 									</v-card-text>
 									<v-divider></v-divider>
 									<v-card-actions>
-										<v-btn text small @click="window = 0"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
+										<v-btn text small @click="window = windows.main"><v-icon left>mdi-arrow-left-bold</v-icon>Вход</v-btn>
 									</v-card-actions>
 								</v-window-item>
 							</v-window>	
@@ -501,16 +498,16 @@ export default {
 		validPasswordReset: true,
 		tab: null,
 		tabColor: {
-		login: 'primary',
-		signup: 'success'
+			login: 'primary',
+			signup: 'success'
 		},
 		tabText: {
-		login: 'Войти',
-		signup: 'Зарегистрироваться'
+			login: 'Войти',
+			signup: 'Зарегистрироваться'
 		},
 		btnIcon: {
-		login: 'mdi-login',
-		signup: 'mdi-pencil'
+			login: 'mdi-login',
+			signup: 'mdi-pencil'
 		},
 		givenName: 'Иван',
 		familyName: 'Агура',
@@ -538,6 +535,15 @@ export default {
 		passRules: [ v => !!v || 'Необходимо ввести пароль' ],
 		privatePolicyRules: [ v => !!v || 'Неодходимо Ваше согласие'],
 		window: 0,
+		windows: {
+			main: 0,
+			accountConfirmation: 1,
+			accountNotConfirmed: 2,
+			forgotPassword: 3,
+			passwordReset: 4,
+			passwordCreate: 5,
+			passwordSuccess: 6,
+		},
 		resetToken: ''
 	}),
 	computed: {
@@ -574,28 +580,33 @@ export default {
 				login: this.validateLogin,
 				signup: this.validateSignup
 			}
+		},
+		queryActions() {
+			return {
+				confirmation: this.checkConfirmation,
+				resetToken: this.checkResetToken
+			}
 		}
 	},
 	created() {
-		const { confirmation, resetToken } = this.$route.query
-		if (confirmation) {
-			this.checkConfirmation(confirmation)
-		}
-		if (resetToken) {
-			this.resetToken = resetToken // save for validateChangePassword()
-			this.checkResetToken(resetToken)			
-		}
+
+		Object.entries(this.$route.query).forEach(this.queryHandler)
+
 		this.getPrivacyPolicy()
 			.then(({ data }) => { this.privatePolicyHtml = data })
 			.catch(err => { this.privatePolicyHtml = err.message })
 	},
 	methods: {
-		checkResetToken(resetToken) {
-			Api.get('/check_reset_token', {
-					params: { token: resetToken }
-				})
+
+		queryHandler([param, value]) {
+			if (param in this.queryActions) this.queryActions[param](value)
+		},
+
+		checkResetToken(token) {
+			Api.get('/check_reset_token', { params: { token } })
 				.then(() => {
-					this.window = 5
+					this.resetToken = token
+					this.window = this.windows.passwordCreate
 				})
 		},
 
@@ -606,49 +617,49 @@ export default {
 					newPassword: this.newPassword
 				})
 				.then(() => {
-					this.window = 6
+					this.window = this.windows.passwordSuccess
 				})			
 			}
 		},
 
-		sendEmailReset() {
-			return Api.get('/send_email_reset', {
+		sendEmailReset(event) {
+			const promise = Api.get('/send_email_reset', {
 				params: { email: this.email }
-			})				
+			})
+			return !event && promise		
 		},
 
-		validateEmailReset(email) {
+		validateEmailReset() {
 			if (this.$refs.resetEmailForm.validate()) {
 				this.sendEmailReset()
 					.then(() => {
-						this.window = 4
+						this.window = this.windows.passwordReset
 					})
 			}
 		},
 
-		checkConfirmation(confirmation) {
-			Api.post('/email_confirm', {
-					token: confirmation
-				})
+		checkConfirmation(token) {
+			Api.post('/email_confirm', { token })
 				.then(() => {
 					location.replace('https://scheme.com.ua')
 				})
 				.catch(() => {
-					this.window = 2
+					this.window = this.windows.accountNotConfirmed
 				})		
 		},
 
-		sendConfirmationEmail() {
-			return Api.get('/send_confirmation_email', {
+		sendConfirmationEmail(event) {
+			const promise = Api.get('/send_confirmation_email', {
 				params: { email: this.email }
 			})
+			return !event && promise
 		},
 
 		validateConfirmation() {
 			if (this.$refs.confirmationForm.validate()) {
 				this.sendConfirmationEmail()
 				.then(() => {
-					this.window = 1
+					this.window = this.windows.accountConfirmation
 				})
 			}
 		},
@@ -666,12 +677,10 @@ export default {
 					})
 				})
 				.catch(error => {
-					if (error.name === 'emailVerifiedFails') {
-						Api.get('/send_confirmation_email', {
-							params: { email: this.email }
-						})
+					if (error.response.data.name === 'emailVerifiedFails') {
+						this.sendConfirmationEmail()
 						.then(() => {
-							this.window = 1
+							this.window = this.windows.accountConfirmation
 						})
 					}
 				})	
@@ -686,25 +695,22 @@ export default {
 					email: this.email,
 					password: this.signupPassword
 				})
-				.then(({ data }) => {
+				.then(() => {
 					this.signupPassword = ''
-					const { email } = data
-					return Api.get('/send_confirmation_email', {
-						params: { email }
-					})
+					return this.sendConfirmationEmail()
 				})
-				.then(({ data }) => {
+				.then(() => {
 					this.$store.commit(SNACKBAR_SUCCESS, {
 						text: 'Успешная аутентификация'
 					})
-					this.window = 1
+					this.window = this.windows.accountConfirmation
 				})	
 			}
 		},
 
 		googleLogin() {
-			this.$popup.open('/auth/google', 'google')
-			.then(({ data }) => {
+			this.$popup.open('/auth/google')
+			.then(() => {
 				this.$store.commit(SNACKBAR_SUCCESS, {
 					text: 'Успешная аутентификация'
 				})
@@ -718,8 +724,8 @@ export default {
 		},
 
 		facebookLogin() {
-			this.$popup.open('/auth/facebook', 'facebook')
-			.then(({ data }) => {
+			this.$popup.open('/auth/facebook')
+			.then(() => {
 				this.$store.commit(SNACKBAR_SUCCESS, {
 					text: 'Успешная аутентификация'
 				})
@@ -732,8 +738,9 @@ export default {
 			.finally(() => this.$popup.window.close())
 		},
 
-		getPrivacyPolicy() {
-			return Api.get('https://scheme.com.ua/privacy_policy.html')
+		getPrivacyPolicy(event) {
+			const promise = Api.get('https://scheme.com.ua/privacy_policy.html')
+			return !event && promise
 		},
 
 		closeSnackbar() {

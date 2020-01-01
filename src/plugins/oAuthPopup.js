@@ -18,7 +18,8 @@ export default {
 
       window: null,
 
-      open (url, provider) {
+      open (url) {
+        const provider = url.split('/').pop()
         
         if (this.window === null || this.window.closed) {
           this.window = window.open(url, provider, windowSize[provider])

@@ -4,7 +4,7 @@ import { LOADING_START, LOADING_END, SNACKBAR_ERROR } from '@/mutation.types'
 
 const Api = axios.create({
     baseURL: 'http://localhost:3000/auth',
-    withCredentials: false
+    withCredentials: false,
 })
 
 Api.interceptors.request.use(config => {
@@ -24,7 +24,7 @@ Api.interceptors.response.use(response => {
     const { response: { data }, message } = error
     const text = (data && data.message) || message
     store.commit(SNACKBAR_ERROR, { text })
-    console.error(error)
+    console.dir(error.toJSON())
 
     return Promise.reject(error)
 })
